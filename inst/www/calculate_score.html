@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello</title>
+    
+    <!-- Include order: first jquery, then opencpu.js, and then your code -->
+    <script src="opencpu/jquery-1.10.2.min.js"></script>
+    <script src="opencpu/opencpu-0.4.js"></script>
+    <script src="loader.js"></script>
+    <script>
+    //init this script when the page has loaded
+    $(document).ready(function(){
+      $("#submitbutton").on("click", function(){
+        //disable the button to prevent multiple clicks
+        $("#submitbutton").attr("disabled", "disabled");
+        
+        //read the value for 'myname'
+        var myname = $("#namefield").val();
+        
+        //perform the request
+        var req = ocpu.rpc("calculate_score", {
+          fileName : "variables for R program.xlsx"
+        }, function(output){
+          $("#output").text(output.message);
+		
+        });
+        
+        //if R returns an error, alert the error message
+        req.fail(function(){
+          alert("Server error: " + req.responseText);
+        });
+        
+        //after request complete, re-enable the button 
+        req.always(function(){
+          $("#submitbutton").removeAttr("disabled")
+        });
+      });
+      
+   
+    });
+    </script>
+    
+    <style>
+      table a:link {
+	color: #666;
+	font-weight: bold;
+	text-decoration:none;
+}
+table a:visited {
+	color: #999999;
+	font-weight:bold;
+	text-decoration:none;
+}
+table a:active,
+table a:hover {
+	color: #bd5a35;
+	text-decoration:underline;
+}
+table {
+	font-family:Arial, Helvetica, sans-serif;
+	color:#666;
+	font-size:12px;
+	text-shadow: 1px 1px 0px #fff;
+	background:#eaebec;
+	margin:20px;
+	border:#ccc 1px solid;
+
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+
+	-moz-box-shadow: 0 1px 2px #d1d1d1;
+	-webkit-box-shadow: 0 1px 2px #d1d1d1;
+	box-shadow: 0 1px 2px #d1d1d1;
+}
+table th {
+	padding:21px 25px 22px 25px;
+	border-top:1px solid #fafafa;
+	border-bottom:1px solid #e0e0e0;
+
+	background: #ededed;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#ebebeb));
+	background: -moz-linear-gradient(top,  #ededed,  #ebebeb);
+}
+table th:first-child {
+	text-align: left;
+	padding-left:20px;
+}
+table tr:first-child th:first-child {
+	-moz-border-radius-topleft:3px;
+	-webkit-border-top-left-radius:3px;
+	border-top-left-radius:3px;
+}
+table tr:first-child th:last-child {
+	-moz-border-radius-topright:3px;
+	-webkit-border-top-right-radius:3px;
+	border-top-right-radius:3px;
+}
+table tr {
+	text-align: center;
+	padding-left:20px;
+}
+table td:first-child {
+	text-align: left;
+	padding-left:20px;
+	border-left: 0;
+}
+table td {
+	padding:18px;
+	border-top: 1px solid #ffffff;
+	border-bottom:1px solid #e0e0e0;
+	border-left: 1px solid #e0e0e0;
+
+	background: #fafafa;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#fafafa));
+	background: -moz-linear-gradient(top,  #fbfbfb,  #fafafa);
+}
+table tr.even td {
+	background: #f6f6f6;
+	background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#f6f6f6));
+	background: -moz-linear-gradient(top,  #f8f8f8,  #f6f6f6);
+}
+table tr:last-child td {
+	border-bottom:0;
+}
+table tr:last-child td:first-child {
+	-moz-border-radius-bottomleft:3px;
+	-webkit-border-bottom-left-radius:3px;
+	border-bottom-left-radius:3px;
+}
+table tr:last-child td:last-child {
+	-moz-border-radius-bottomright:3px;
+	-webkit-border-bottom-right-radius:3px;
+	border-bottom-right-radius:3px;
+}
+table tr:hover td {
+	background: #f2f2f2;
+	background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
+	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
+}
+    </style>
+    
+  </head>
+    
+  <body>
+    <h1>Customer Score</h1>
+    
+  
+    
+    <button id="submitbutton" type="button">Submit to server!</button>
+    
+    <p id="output"></p>
+  
+    <table cellspacing='0'> <!-- cellspacing='0' is important, must stay -->
+
+	<!-- Table Header -->
+	<thead>
+		<tr>
+			<th>Customer Name</th>
+			<th>Fit Score</th>
+			<th>Health Score</th>
+			<th>Value Score</th>
+			<th>Success Score</th>
+			<th>Human Insights</th>
+			<th>Machine Insights</th>
+			<th>Success Plays</th>
+		</tr>
+	</thead>
+	<!-- Table Header -->
+
+	<!-- Table Body -->
+	<tbody>
+
+		<tr>
+			<td>Customer 1</td>
+			<td id="fit1"></td>
+			<td id="health1"></td>
+			<td id="value1"></td>
+			<td id="success1"></td>
+			<td id="hinsight1"></td>
+			<td id="minsight1"></td>
+			<td id="play1"></td>
+		</tr><!-- Table Row -->
+
+		<tr class="even">
+			<td>Customer 2</td>
+			<td id="fit2"></td>
+			<td id="health2"></td>
+			<td id="value2"></td>
+			<td id="success2"></td>
+			<td id="hinsight2"></td>
+			<td id="minsight2"></td>
+			<td id="play2"></td>
+		</tr><!-- Darker Table Row -->
+
+		<tr>
+			<td>Customer 3</td>
+			<td id="fit3"></td>
+			<td id="health3"></td>
+			<td id="value3"></td>
+			<td id="success3"></td>
+			<td id="hinsight3"></td>
+			<td id="minsight3"></td>
+			<td id="play3"></td>
+		</tr>
+
+		<tr class="even">
+			<td>Customer 4</td>
+			<td id="fit4"></td>
+			<td id="health4"></td>
+			<td id="value4"></td>
+			<td id="success4"></td>
+			<td id="hinsight4"></td>
+			<td id="minsight4"></td>
+			<td id="play4"></td>
+		</tr>
+
+		<tr>
+			<td>Customer 5</td>
+			<td id="fit5"></td>
+			<td id="health5"></td>
+			<td id="value5"></td>
+			<td id="success5"></td>
+			<td id="hinsight5"></td>
+			<td id="minsight5"></td>
+			<td id="play5"></td>
+		</tr>
+
+		<tr class="even">
+			<td>Customer 6</td>
+			<td id="fit6"></td>
+			<td id="health6"></td>
+			<td id="value6"></td>
+			<td id="success6"></td>
+			<td id="hinsight6"></td>
+			<td id="minsight6"></td>
+			<td id="play6"></td>
+		</tr>
+
+		<tr>
+			<td>Customer 7</td>
+			<td id="fit7"></td>
+			<td id="health7"></td>
+			<td id="value7"></td>
+			<td id="success7"></td>
+			<td id="hinsight7"></td>
+			<td id="minsight7"></td>
+			<td id="play7"></td>
+		</tr>
+<tr class="even">
+			<td>Customer 8</td>
+			<td id="fit8"></td>
+			<td id="health8"></td>
+			<td id="value8"></td>
+			<td id="success8"></td>
+			<td id="hinsight8"></td>
+			<td id="minsight8"></td>
+			<td id="play8"></td>
+		</tr>
+
+		<tr>
+			<td>Customer 9</td>
+			<td id="fit1"></td>
+			<td id="health9"></td>
+			<td id="value9"></td>
+			<td id="success9"></td>
+			<td id="hinsight9"></td>
+			<td id="minsight9"></td>
+			<td id="play9"></td>
+		</tr>
+		<tr class="even">
+			<td>Customer 10</td>
+			<td id="fit1"></td>
+			<td id="health10"></td>
+			<td id="value10"></td>
+			<td id="success10"></td>
+			<td id="hinsight10"></td>
+			<td id="minsight10"></td>
+			<td id="play1"></td>
+		</tr>
+
+	</tbody>
+	<!-- Table Body -->
+
+</table>
+    <br />
+
+    
+    
+   
+    
+  </body>
+</html>
